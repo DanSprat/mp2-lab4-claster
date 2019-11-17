@@ -34,6 +34,12 @@ queue <T>::queue() : size(0), head(nullptr), LastNode(nullptr)
 template <typename T>
 queue <T>::~queue()
 {
+	while (head != nullptr)
+	{
+		Node <T> *p = head;
+		head = head->pNext;
+		delete p;
+	}
 }
 template <typename T>
 int queue <T>::lenght()

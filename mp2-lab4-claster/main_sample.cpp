@@ -5,10 +5,16 @@
 #include "Cluster.h"
 #include "queue.h"
 #include "TList.h"
+#include <sstream>
 using namespace std;
 int main()
 {
 	setlocale(LC_ALL, "Russian");
+	stringstream is;
+	int g=0;
+	is << g;
+	string word;
+	is >> word;
 	int a, c;
 	double b;
 	cout << "Введите количество процессоров: ";

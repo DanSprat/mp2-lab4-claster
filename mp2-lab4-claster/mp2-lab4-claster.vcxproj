@@ -156,7 +156,6 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="queue.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Task.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cluster.cpp" />
@@ -167,7 +166,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Task.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="mp2-lab4-claster.rc" />

@@ -8,6 +8,7 @@ class Cluster
 	class Processor 
 	{	
 	public:
+		vector <string> Tasks;
 		int Cores;
 		int FreeCores;
 		Processor();
@@ -17,19 +18,21 @@ class Cluster
 	class Task
 	{
 	public:
+		string ID;
 		int NeedTakts;
 		int NeedCores;
 		int NeedProc;
 		int StartTime;
-		void Rand(int MT,int MC,int MP);
+		void Rand(int MT,int MC,int MP,int NumberInClaster);
 		bool isComplited(int CurrentTakt);
 		Task();
 		~Task();
 	};
-	vector <Task> Actives;
-	vector <Task> Complited;
+	vector <Task> Failed; // Задачи которые не попадут на кластер,даже если на том  не будет ни одной задачи
+	vector <Task> Actives; // Задачи на кластере
+	vector <Task> Complited; // Выполненные задачи
 	queue <Task> Tasks;
-	Processor *Proces;
+	vector <Processor> Proces;
 	int NumberProcessors;
 	int WorkTime;
 	double ChanceOfNew;

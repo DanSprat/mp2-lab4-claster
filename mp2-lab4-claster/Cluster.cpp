@@ -2,13 +2,14 @@
 #include "Cluster.h"
 #include <ctime>
 #include <vector>
+#include <sstream>
 Cluster::Cluster(int NumProc, int WorkTime, double Chance)
 {
 	this->WorkTime = WorkTime;
 	NumberProcessors = NumProc;
 	ChanceOfNew = Chance;
-	Proces = new Processor[NumberProcessors];
 	srand(time(0));
+	Proces.resize(NumberProcessors);
 	for (int i = 0; i < NumberProcessors; i++)
 	{
 		int b = 1 + rand() % 24;
@@ -19,23 +20,33 @@ Cluster::Cluster(int NumProc, int WorkTime, double Chance)
 
 void Cluster::Start()
 {
+	int NumberOfTasks=0;
 	std::vector<int> pos;
 	Task a;
 	bool CanInsert;
 	for (int i = 0; i < WorkTime; i++)
 	{
 		srand(time(0));
-		double p = ((0.01) *(rand() % 100));
-		if (p > ChanceOfNew)
+		double p = 1;
+		while (p >= ChanceOfNew)
 		{
-			a.Rand(WorkTime, NumberProcessors, 24);
+			NumberOfTasks++;
+			a.Rand(WorkTime,24, NumberProcessors,NumberOfTasks);
 			Tasks.push(a);
+			p = ((0.01) *(rand() % 100));
 		}
 		CanInsert = 1;
 		while (!Tasks.IsEmpty())
 		{
 			while (!ChanceToInsertTask())
+			{
+				Failed.push_back(Tasks.front());
 				Tasks.pop();
+				if (Tasks.IsEmpty())
+					break;
+			}
+			if (Tasks.IsEmpty())
+				break;
 			int Check = 0;
 			for (int j = 0; j < NumberProcessors; j++)
 			{
@@ -55,6 +66,7 @@ void Cluster::Start()
 			{
 				for (int j = 0; j < pos.size(); j++)
 					Proces[pos[j]].FreeCores -= Tasks.front().NeedCores;
+				Tasks.front().StartTime = i;
 				Actives.push_back(Tasks.front());
 				Tasks.pop();
 			}
@@ -73,7 +85,7 @@ void Cluster::Start()
 
 bool Cluster::ChanceToInsertTask()
 {
-	int a = Tasks.front().NeedProc;
+	int a = 0;
 	int b = Tasks.front().NeedCores;
 	for (int i = 0; i < NumberProcessors; i++)
 	{
@@ -95,7 +107,7 @@ Cluster::Cluster()
 
 Cluster::~Cluster()
 {
-	delete[] Proces;
+	
 }
 
 Cluster::Processor::Processor()
@@ -112,12 +124,18 @@ bool Cluster::Processor::isFull()
 {
 	return FreeCores == 0;
 }
-void Cluster::Task::Rand(int MT, int MC, int MP)
+void Cluster::Task::Rand(int MT, int MC, int MP,int NumberInClaster)
 {
+	ID = "T00000000";
+	stringstream is;
+	is << NumberInClaster;
+	string word;
+	is >> word;
+	ID.replace(9 - word.size(), 9, word);
 	srand(time(0));
-	NeedCores = 1 + rand() % MC;
-	NeedTakts = 1 + rand() % MT;
-	NeedProc = 1 + rand() % MP;
+	NeedCores = 1 + (rand() % MC)/4;
+	NeedTakts = 1 + (rand() % MT)/4;
+	NeedProc = 1 + (rand() % MP)/4;
 	StartTime = 0;
 }
 bool Cluster::Task::isComplited(int CurrentTakt)
