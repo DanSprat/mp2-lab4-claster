@@ -2,11 +2,13 @@
 //
 #include "pch.h"
 #include <iostream>
-#include "Task.h"
+#include "Cluster.h"
 #include "queue.h"
+#include "TList.h"
 using namespace std;
 int main()
 {
+	setlocale(LC_ALL, "Russian");
 	int a, c;
 	double b;
 	cout << "Введите количество процессоров: ";
@@ -18,7 +20,9 @@ int main()
 	cout << "Введите время работы кластера: ";
 	cin >> c;
 	cout << endl;
-	Claster Test(a, b,c);
+	Cluster Test(a, c, b);
+
+	Test.Start();
 
 }
 

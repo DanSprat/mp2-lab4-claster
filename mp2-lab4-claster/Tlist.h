@@ -1,3 +1,5 @@
+#pragma once
+#include "pch.h"
 #include <iostream>
 using namespace std;
 template <typename T>
@@ -46,18 +48,18 @@ Tlist <T>::Tlist()
 template<typename T>
 void Tlist<T>::push_back(T data) // Положить на "хвост"
 {
-	if (head == nullptr)  //Если "голова" пуста
+	if (head == nullptr)
 	{
-		head = new Link <T>(data); // Создаем ее
+		head = new Link <T>(data);
 	}
 	else
 	{
 		Link <T> *tmp = this->head;
-		while (tmp->pNext != nullptr) // Мотаем до "хвоста"
+		while (tmp->pNext != nullptr)
 		{
 			tmp = tmp->pNext;
 		}
-		tmp->pNext = new Link <T>(data); //Создаем в хвосте элемент
+		tmp->pNext = new Link <T>(data);
 	}
 	size++;
 }
@@ -72,9 +74,9 @@ void Tlist<T>::push_first(T data) // Положить в "голову"
 	else
 	{
 		Link <T> *tmp;
-		tmp = new Link <T>(data); // Создаем Звено со значением data
-		tmp->pNext = head; // Следующее звено будет иметь адрес текущей головы 
-		head = tmp; // меняем адрес "головы"
+		tmp = new Link <T>(data);
+		tmp->pNext = head;
+		head = tmp;
 	}
 	size++;
 }
@@ -95,12 +97,12 @@ void Tlist<T>::push_pos(const  T data, const int pos) // Положить на позицию
 	int i = 0;
 	Link <T>* tmp;
 	Link <T> * PreLink = head; // Сохраняем предыдущий индекс
-	while (i != pos - 1)  // Доходим до звена с номером на 1 меньше и останавливаемся
+	while (i != pos - 1)
 	{
 		PreLink = PreLink->pNext;
 		i++;
 	}
-	tmp = new Link <T>(data); //Создаем звено со значением data
+	tmp = new Link <T>(data);
 	tmp->pNext = PreLink->pNext;
 	PreLink->pNext = tmp;
 	size++;
