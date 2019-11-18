@@ -1,12 +1,9 @@
 ﻿// mp2-lab4-claster.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
 //
 #include "pch.h"
-#include <iostream>
 #include "Cluster.h"
 #include "queue.h"
 #include "TList.h"
-#include <sstream>
-#include <iomanip>
 using namespace std;
 int main()
 {
@@ -24,7 +21,7 @@ int main()
 	cout << "Введите время работы кластера: ";
 	cin >> c;
 	cout << endl;
-	Cluster Test(a, c, b);
+	Cluster Test(a,c,b);
 	cout << "Выводить полную информацию на каждом такте? Y or N?" << endl;
 	cin >> Info;
 	if (Info == 'y' || Info == 'Y')

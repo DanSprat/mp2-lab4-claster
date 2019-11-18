@@ -3,6 +3,10 @@
 #include "queue.h"
 #include <vector>
 #include <algorithm>
+#include <iomanip>
+#include <ctime>
+#include "windows.h"
+#include <sstream>
 using namespace std;
 class Cluster
 {
@@ -33,17 +37,17 @@ class Cluster
 	vector <Task> Failed; // Задачи которые не попадут на кластер,даже если на том  не будет ни одной задачи
 	vector <Task> Actives; // Задачи на кластере
 	vector <Task> Complited; // Выполненные задачи
-	queue <Task> Tasks;
-	vector <Processor> Proces;
-	bool InfoF;
-	int WorkTime;
-	double ChanceOfNew;
+	queue <Task> Tasks; // Очереь задач
+	vector <Processor> Proces; // Процессоры
+	bool InfoF; // Флаг на вывод полной информации 
+	int WorkTime; // Время работы
+	double ChanceOfNew; // Порог появления новой задачи
 public:
-	void SetInfoMode(bool info);
-	Cluster(int NumProc, int WorkTime, double Chance);
+	void SetInfoMode(bool info); 
+	Cluster(int NumProc=0, int WorkTime=0, double Chance=0,bool Info=false);
 	void Start();
 	bool ChanceToInsertTask();
-	Cluster();
+     Cluster();
 	~Cluster();
 };
 

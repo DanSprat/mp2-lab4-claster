@@ -1,16 +1,12 @@
 #include "pch.h"
 #include "Cluster.h"
-#include <ctime>
-#include <vector>
-#include <sstream>
-#include <iomanip>
-#include "windows.h"
 void Cluster::SetInfoMode(bool info)
 {
 	InfoF = info;
 }
-Cluster::Cluster(int NumProc, int WorkTime, double Chance)
+Cluster::Cluster(int NumProc, int WorkTime, double Chance,bool Info)
 {
+	InfoF = Info;
 	this->WorkTime = WorkTime;
 	ChanceOfNew = Chance;
 	srand(time(0));
@@ -25,18 +21,17 @@ Cluster::Cluster(int NumProc, int WorkTime, double Chance)
 
 void Cluster::Start()
 {
-	double MiddleLoad = 0;
-	int SummCores=0;
-	int SummFreeCores=0;
+	double MiddleLoad = 0; // Переменная для вычисления средней загрузки на конец работы класетра
+	int SummCores=0; // Общая сумма ядер
+	int SummFreeCores=0; // Сумма свободныъ ядер
 	for (int i = 0; i<Proces.size(); i++)
 	{
 		SummCores += Proces[i].Cores;
 		SummFreeCores += Proces[i].Cores;
 	}
-	int NumberOfTasks=0;
-	std::vector<int> pos;
+	int NumberOfTasks=0; // Количество появившихся задач
 	Task a;
-	bool CanInsert;
+	bool CanInsert; 
 	for (int i = 1; i <= WorkTime; i++)
 	{
 		srand(time(0));
@@ -45,7 +40,7 @@ void Cluster::Start()
 		double p = 1;
 		cout << "Появившиеся задачи" << endl;
 		cout << endl;
-		while (p >= ChanceOfNew)
+		while (p >= ChanceOfNew) // Генерация новых задач
 		{
 			NumberOfTasks++;
 			a.Rand(WorkTime,24, Proces.size(),NumberOfTasks);
@@ -57,7 +52,7 @@ void Cluster::Start()
 		CanInsert = 1;
 		while (!Tasks.IsEmpty())
 		{
-			while (!ChanceToInsertTask())
+			while (!ChanceToInsertTask()) // Проверка на невыполняемые задачи
 			{
 				Failed.push_back(Tasks.front());
 				Tasks.pop();
@@ -66,15 +61,15 @@ void Cluster::Start()
 			}
 			if (Tasks.IsEmpty())
 				break;
-			int Check = 0;
-			for (int j = 0; j < Proces.size(); j++)
+			int Check = 0;  // Счетчик для кол-ва процессоров с необходимым числом ядер 
+			for (int j = 0; j < Proces.size(); j++)  // В этом цикле проверяем можем ли положить задачу на кластер
 			{
-				if (Proces[j].FreeCores >= Tasks.front().NeedCores)
+				if (Proces[j].FreeCores >= Tasks.front().NeedCores) 
 				{
-					Check++;
-					Tasks.front().Where.push_back(j);
+					Check++; 
+					Tasks.front().Where.push_back(j); // Задача "запонимает" номера процессоров на которых  она лежит
 				}
-				if (Check == Tasks.front().NeedProc)
+				if (Check == Tasks.front().NeedProc) 
 					break;
 				if (j == Proces.size() - 1)
 				{
@@ -84,15 +79,15 @@ void Cluster::Start()
 			}
 			if (CanInsert)
 			{
-				for (int j = 0; j < Tasks.front().Where.size(); j++)
+				for (int j = 0; j < Tasks.front().Where.size(); j++)  // В цикле "вносим " задачу на кластер
 				{
-					Proces[Tasks.front().Where[j]].FreeCores -= Tasks.front().NeedCores;
-					Proces[Tasks.front().Where[j]].Tasks.push_back(Tasks.front().ID);
-					SummFreeCores -= Tasks.front().NeedCores;
+					Proces[Tasks.front().Where[j]].FreeCores -= Tasks.front().NeedCores; // Определяем новое количество свободных ядер
+					Proces[Tasks.front().Where[j]].Tasks.push_back(Tasks.front().ID); // Процессор запонимает ID задачи
+					SummFreeCores -= Tasks.front().NeedCores; 
 				}
 				Tasks.front().StartTime = i;
-				Actives.push_back(Tasks.front());
-				Tasks.pop();
+				Actives.push_back(Tasks.front()); // Вносим задачу в список исполняемых
+				Tasks.pop(); // Выкидываем из очереди
 			}
 			else break;
 		}
@@ -101,7 +96,6 @@ void Cluster::Start()
 			if (Actives[j].isComplited(i))
 			{
 				std::vector<string>::iterator it;
-				int Numb=0;
 				for (int k = 0; k < Actives[j].Where.size(); k++)
 				{
 					it= find(Proces[Actives[j].Where[k]].Tasks.begin(), Proces[Actives[j].Where[k]].Tasks.end(), Actives[j].ID);
@@ -143,8 +137,8 @@ void Cluster::Start()
 				cout << "\t\tСвободно ядер: " << Proces[j].FreeCores << endl;
 			}
 			cout << "==============================================================================" << endl;
-		} 
-		Sleep(1000);
+		}                                     
+		Sleep(1);
 	}
 	MiddleLoad = MiddleLoad / (SummCores * WorkTime);
 	cout << "Средняя загрузка кластера:" << MiddleLoad * 100 << " %";
@@ -213,7 +207,7 @@ void Cluster::Task::Rand(int MT, int MC, int MP,int NumberInClaster)
 	is >> word;
 	ID.replace(9 - word.size(), 9, word);
 	NeedCores = 1 + (rand() % MC)/4;
-	NeedTakts = 1 + (rand() % MT)/2;
+	NeedTakts = 1 + (rand() % MT)/4;
 	NeedProc = 1 + (rand() % MP)/2;
 	StartTime = 0;
 }
