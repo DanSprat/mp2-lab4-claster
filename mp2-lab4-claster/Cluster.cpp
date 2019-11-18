@@ -3,14 +3,19 @@
 #include <ctime>
 #include <vector>
 #include <sstream>
+#include <iomanip>
+#include "windows.h"
+void Cluster::SetInfoMode(bool info)
+{
+	InfoF = info;
+}
 Cluster::Cluster(int NumProc, int WorkTime, double Chance)
 {
 	this->WorkTime = WorkTime;
-	NumberProcessors = NumProc;
 	ChanceOfNew = Chance;
 	srand(time(0));
-	Proces.resize(NumberProcessors);
-	for (int i = 0; i < NumberProcessors; i++)
+	Proces.resize(NumProc);
+	for (int i = 0; i < Proces.size(); i++)
 	{
 		int b = 1 + rand() % 24;
 		Proces[i].Cores = b;
@@ -20,21 +25,35 @@ Cluster::Cluster(int NumProc, int WorkTime, double Chance)
 
 void Cluster::Start()
 {
+	double MiddleLoad = 0;
+	int SummCores=0;
+	int SummFreeCores=0;
+	for (int i = 0; i<Proces.size(); i++)
+	{
+		SummCores += Proces[i].Cores;
+		SummFreeCores += Proces[i].Cores;
+	}
 	int NumberOfTasks=0;
 	std::vector<int> pos;
 	Task a;
 	bool CanInsert;
-	for (int i = 0; i < WorkTime; i++)
+	for (int i = 1; i <= WorkTime; i++)
 	{
 		srand(time(0));
+		cout << "ТАКТ "<<i << endl;
+		cout << "==============================================================================" << endl;
 		double p = 1;
+		cout << "Появившиеся задачи" << endl;
+		cout << endl;
 		while (p >= ChanceOfNew)
 		{
 			NumberOfTasks++;
-			a.Rand(WorkTime,24, NumberProcessors,NumberOfTasks);
+			a.Rand(WorkTime,24, Proces.size(),NumberOfTasks);
+			cout << setw(10) << a.ID << setw(25) << "requires processors: " << a.NeedProc << setw(20) << "requires cores: " << a.NeedCores << setw(18)<<"requires time: "<<a.NeedTakts << endl;
 			Tasks.push(a);
 			p = ((0.01) *(rand() % 100));
 		}
+		cout << endl;
 		CanInsert = 1;
 		while (!Tasks.IsEmpty())
 		{
@@ -48,24 +67,29 @@ void Cluster::Start()
 			if (Tasks.IsEmpty())
 				break;
 			int Check = 0;
-			for (int j = 0; j < NumberProcessors; j++)
+			for (int j = 0; j < Proces.size(); j++)
 			{
 				if (Proces[j].FreeCores >= Tasks.front().NeedCores)
 				{
 					Check++;
-					pos.push_back(j);
+					Tasks.front().Where.push_back(j);
 				}
 				if (Check == Tasks.front().NeedProc)
 					break;
-				if (j == NumberProcessors - 1)
+				if (j == Proces.size() - 1)
 				{
 					CanInsert = 0;
+					Tasks.front().Where.clear();
 				}
 			}
 			if (CanInsert)
 			{
-				for (int j = 0; j < pos.size(); j++)
-					Proces[pos[j]].FreeCores -= Tasks.front().NeedCores;
+				for (int j = 0; j < Tasks.front().Where.size(); j++)
+				{
+					Proces[Tasks.front().Where[j]].FreeCores -= Tasks.front().NeedCores;
+					Proces[Tasks.front().Where[j]].Tasks.push_back(Tasks.front().ID);
+					SummFreeCores -= Tasks.front().NeedCores;
+				}
 				Tasks.front().StartTime = i;
 				Actives.push_back(Tasks.front());
 				Tasks.pop();
@@ -76,9 +100,66 @@ void Cluster::Start()
 		{
 			if (Actives[j].isComplited(i))
 			{
+				std::vector<string>::iterator it;
+				int Numb=0;
+				for (int k = 0; k < Actives[j].Where.size(); k++)
+				{
+					it= find(Proces[Actives[j].Where[k]].Tasks.begin(), Proces[Actives[j].Where[k]].Tasks.end(), Actives[j].ID);
+					Proces[Actives[j].Where[k]].Tasks.erase(it);
+					Proces[Actives[j].Where[k]].FreeCores += Actives[j].NeedCores;
+					SummFreeCores += Actives[j].NeedCores;
+				}
 				Complited.push_back(Actives[j]);
-				Actives.erase(Actives.begin()+j-1);
+				Actives.erase(Actives.begin()+j);
+				j--;
 			}
+		}
+		double b = static_cast<double>(SummFreeCores) / static_cast<double>( SummCores);
+		MiddleLoad += SummCores -SummFreeCores;
+		cout << "Общая загрузка кластера : " << (1-b) * 100 << " %" << endl;
+		if (InfoF == true)
+		{
+			for (int j = 0; j < Proces.size(); j++)
+			{
+				cout << endl;
+				cout << "Загрузка процессора " << j + 1 << ": " << static_cast<double>(1 - (Proces[j].FreeCores) / static_cast<double>(Proces[j].Cores)) * 100 << " %" << endl;
+				cout << "\tЗадачи на процессоре: ";
+				if (Proces[j].Tasks.size() != 0) 
+				{
+					for (int k = 0; k < Proces[j].Tasks.size(); k++)
+					{
+						if (k == Proces[j].Tasks.size()-1)
+						cout << Proces[j].Tasks[k]  << endl;
+						else
+							cout << Proces[j].Tasks[k]<<",";
+					}
+				}
+				else cout << "null"<<endl;
+				cout << "\t\tВсего ядер: " << Proces[j].Cores << endl;
+				if (Proces[j].FreeCores < 0)
+				{
+					cout << "Blet";
+				}
+				cout << "\t\tСвободно ядер: " << Proces[j].FreeCores << endl;
+			}
+			cout << "==============================================================================" << endl;
+		} 
+		Sleep(1000);
+	}
+	MiddleLoad = MiddleLoad / (SummCores * WorkTime);
+	cout << "Средняя загрузка кластера:" << MiddleLoad * 100 << " %";
+	cout << endl;
+	cout << "Число появившихся задач: " << Actives.size() + Failed.size() + Complited.size() + Tasks.lenght() << endl;
+	cout << "Число задач в очереди: " << Tasks.lenght() << endl;
+	cout << "Число выполненных задач: " << Complited.size() << endl;
+	cout << endl;
+	cout << "Число  задач не прошедших по ресурсам: " << Failed.size() << endl;
+	if (Failed.size() != 0)
+	{
+		cout << "Инофрмация о них: " << endl;
+		for (int i = 0; i < Failed.size(); i++)
+		{
+			cout << setw(10) << Failed[i].ID << setw(25) << "requires processors: " << Failed[i].NeedProc << setw(20) << "requires cores: " << Failed[i].NeedCores << setw(18) << "requires time: " << Failed[i].NeedTakts << endl;
 		}
 	}
 }
@@ -87,7 +168,7 @@ bool Cluster::ChanceToInsertTask()
 {
 	int a = 0;
 	int b = Tasks.front().NeedCores;
-	for (int i = 0; i < NumberProcessors; i++)
+	for (int i = 0; i < Proces.size(); i++)
 	{
 		if (Proces[i].Cores >= Tasks.front().NeedCores)
 			a++;
@@ -99,7 +180,6 @@ bool Cluster::ChanceToInsertTask()
 
 Cluster::Cluster()
 {
-	NumberProcessors = 0;
 	 WorkTime=0;
 	 ChanceOfNew=0;
 }
@@ -132,10 +212,9 @@ void Cluster::Task::Rand(int MT, int MC, int MP,int NumberInClaster)
 	string word;
 	is >> word;
 	ID.replace(9 - word.size(), 9, word);
-	srand(time(0));
 	NeedCores = 1 + (rand() % MC)/4;
-	NeedTakts = 1 + (rand() % MT)/4;
-	NeedProc = 1 + (rand() % MP)/4;
+	NeedTakts = 1 + (rand() % MT)/2;
+	NeedProc = 1 + (rand() % MP)/2;
 	StartTime = 0;
 }
 bool Cluster::Task::isComplited(int CurrentTakt)

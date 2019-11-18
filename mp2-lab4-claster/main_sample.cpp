@@ -6,15 +6,13 @@
 #include "queue.h"
 #include "TList.h"
 #include <sstream>
+#include <iomanip>
 using namespace std;
 int main()
 {
+	
 	setlocale(LC_ALL, "Russian");
-	stringstream is;
-	int g=0;
-	is << g;
-	string word;
-	is >> word;
+	 char Info;
 	int a, c;
 	double b;
 	cout << "Введите количество процессоров: ";
@@ -27,7 +25,12 @@ int main()
 	cin >> c;
 	cout << endl;
 	Cluster Test(a, c, b);
-
+	cout << "Выводить полную информацию на каждом такте? Y or N?" << endl;
+	cin >> Info;
+	if (Info == 'y' || Info == 'Y')
+		Test.SetInfoMode(1);
+	else 
+		Test.SetInfoMode(0);
 	Test.Start();
 
 }

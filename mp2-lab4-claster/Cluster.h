@@ -2,6 +2,7 @@
 #include "TList.h"
 #include "queue.h"
 #include <vector>
+#include <algorithm>
 using namespace std;
 class Cluster
 {
@@ -19,6 +20,7 @@ class Cluster
 	{
 	public:
 		string ID;
+		vector <int> Where;
 		int NeedTakts;
 		int NeedCores;
 		int NeedProc;
@@ -33,10 +35,11 @@ class Cluster
 	vector <Task> Complited; // Выполненные задачи
 	queue <Task> Tasks;
 	vector <Processor> Proces;
-	int NumberProcessors;
+	bool InfoF;
 	int WorkTime;
 	double ChanceOfNew;
 public:
+	void SetInfoMode(bool info);
 	Cluster(int NumProc, int WorkTime, double Chance);
 	void Start();
 	bool ChanceToInsertTask();
