@@ -45,7 +45,7 @@ void Cluster::Start()
 			NumberOfTasks++;
 			a.Rand(WorkTime,24, Proces.size(),NumberOfTasks);
 			cout << setw(10) << a.ID << setw(25) << "requires processors: " << a.NeedProc << setw(20) << "requires cores: " << a.NeedCores << setw(18)<<"requires time: "<<a.NeedTakts << endl;
-			Tasks.push(a);
+			Tasks.push(a,(1536  - a.NeedCores*a.NeedProc));
 			p = ((0.01) *(rand() % 100));
 		}
 		cout << endl;
@@ -138,16 +138,24 @@ void Cluster::Start()
 			}
 			cout << "==============================================================================" << endl;
 		}                                     
-		Sleep(1);
+		//Sleep(1000);
+	}
+	ofstream fout("text.txt", ios_base::app);
+	if (!fout.is_open()) // если файл небыл открыт
+	{
+		cout << "Файл не может быть открыт или создан\n"; // напечатать соответствующее сообщение
+		return ; // выполнить выход из программы
 	}
 	MiddleLoad = MiddleLoad / (SummCores * WorkTime);
-	cout << "Средняя загрузка кластера:" << MiddleLoad * 100 << " %";
-	cout << endl;
-	cout << "Число появившихся задач: " << Actives.size() + Failed.size() + Complited.size() + Tasks.lenght() << endl;
-	cout << "Число задач в очереди: " << Tasks.lenght() << endl;
-	cout << "Число выполненных задач: " << Complited.size() << endl;
-	cout << endl;
-	cout << "Число  задач не прошедших по ресурсам: " << Failed.size() << endl;
+	fout << "Средняя загрузка кластера:" << MiddleLoad * 100 << " %";
+	fout << endl;
+	fout << "Число появившихся задач: " << Actives.size() + Failed.size() + Complited.size() + Tasks.lenght() << endl;
+	fout << "Число задач в очереди: " << Tasks.lenght() << endl;
+	fout << "Число выполненных задач: " << Complited.size() << endl;
+	fout << endl;
+	fout << "Число  задач не прошедших по ресурсам: " << Failed.size() << endl;
+	fout << endl;
+	fout.close();
 	if (Failed.size() != 0)
 	{
 		cout << "Инофрмация о них: " << endl;
@@ -208,7 +216,7 @@ void Cluster::Task::Rand(int MT, int MC, int MP,int NumberInClaster)
 	ID.replace(9 - word.size(), 9, word);
 	NeedCores = 1 + (rand() % MC)/4;
 	NeedTakts = 1 + (rand() % MT)/4;
-	NeedProc = 1 + (rand() % MP)/2;
+	NeedProc = 1 + (rand() % MP)/4;
 	StartTime = 0;
 }
 bool Cluster::Task::isComplited(int CurrentTakt)
