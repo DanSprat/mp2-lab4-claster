@@ -7,6 +7,7 @@
 #include <ctime>
 #include "windows.h"
 #include <sstream>
+#include <fstream>
 using namespace std;
 class Cluster
 {
@@ -37,7 +38,7 @@ class Cluster
 	vector <Task> Failed; // Задачи которые не попадут на кластер,даже если на том  не будет ни одной задачи
 	vector <Task> Actives; // Задачи на кластере
 	vector <Task> Complited; // Выполненные задачи
-	queue <Task> Tasks; // Очереь задач
+	TPQueue <Task> Tasks; // Очереь задач
 	vector <Processor> Proces; // Процессоры
 	bool InfoF; // Флаг на вывод полной информации 
 	int WorkTime; // Время работы
