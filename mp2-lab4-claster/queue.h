@@ -7,8 +7,9 @@ class queue
 	public:
 		Node *pNext;
 		T data;
-		Node(T data = T())
+		Node(T data = T(),Node *pNext=nullptr)
 		{
+			this->pNext = pNext;
 			this->data = data;
 		}
 		~Node() {}
@@ -91,8 +92,9 @@ class TPQueue
 		Node *pNext;
 		T data;
 		double Priority;
-		Node(T data = T(), double prior = 0)
+		Node(T data = T(), double prior = 0,Node *Pn=nullptr)
 		{
+			pNext = Pn;
 			this->Priority = prior;
 			this->data = data;
 		}

@@ -17,6 +17,8 @@ Cluster::Cluster(int NumProc, int WorkTime, double Chance,bool Info)
 		Proces[i].FreeCores = b;
 	}
 	InfoF = Info;
+	if (WorkTime < 0)
+		throw 1;
 	this->WorkTime = WorkTime;
 	if (Chance > 1 || Chance < 0)
 		throw 1;
@@ -39,7 +41,6 @@ void Cluster::Start()
 	srand(time(0));
 	for (int i = 1; i <= WorkTime; i++)
 	{
-		
 		cout << "ТАКТ "<<i << endl;
 		cout << "==============================================================================" << endl;
 		double p = 1;
@@ -146,36 +147,15 @@ void Cluster::Start()
 		//Sleep(1000);
 	}
 	ofstream fout("text.txt", ios_base::app);
-	if (!fout.is_open()) // если файл небыл открыт
+	if (!fout.is_open())
 	{
-		cout << "Файл не может быть открыт или создан\n"; // напечатать соответствующее сообщение
-		return ; // выполнить выход из программы
+		cout << "Файл не может быть открыт или создан\n"; 
+		return ;
 	}
 	MiddleLoad = MiddleLoad / (SummCores * WorkTime);
-	fout << endl;
-	fout << "Информация о кластере: " << endl;
-	fout << setw(35) << left << "\tКоличество процессоров "<< setw(8) << left << Proces.size()<<endl;
-	fout << setw(35) << left << "\tВремя работы кластера" << setw(8) << left << WorkTime << endl;
-	fout << setw(35) << left << "\tПорог появления новой задачи:"<< setw(8) << left << ChanceOfNew<<endl;
-	fout << endl;
-	fout << "Средняя загрузка кластера:" << MiddleLoad * 100 << " %" << endl;
 	double temp = Actives.size() + Failed.size() + Complited.size() + Tasks.lenght();
-	fout << "Число появившихся задач: " << temp << endl;
-	fout << "Число задач в очереди: " << Tasks.lenght() << endl;
-	fout << "Число выполненных задач: " << Complited.size() << endl;
-	fout << endl;
-	fout << "Число  задач не прошедших по ресурсам: " << Failed.size() << endl;
-	fout << endl;
-	if (Failed.size() != 0)
-	{
-		cout << "Инофрмация о них: " << endl;
-		for (int i = 0; i < Failed.size(); i++)
-		{
-			cout << setw(10) << Failed[i].ID << setw(25) << "requires processors: " << Failed[i].NeedProc << setw(20) << "requires cores: " << Failed[i].NeedCores << setw(18) << "requires time: " << Failed[i].NeedTakts << endl;
-		}
-	}
-	fout << "\tПроцент выполненных задач "<< Complited.size()*100/temp<<" %"<<endl;
-	fout << "================================================================" << endl;
+	PrintInfo(fout,MiddleLoad,temp);
+	PrintInfo(cout,MiddleLoad,temp);
 	fout.close();
 }
 

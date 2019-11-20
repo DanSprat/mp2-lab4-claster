@@ -3,11 +3,10 @@
 #include "pch.h"
 #include "Cluster.h"
 #include "queue.h"
-#include "TList.h"
 using namespace std;
 int main()
 {
-	
+	ofstream fout("text.txt", ios_base::app);
 	setlocale(LC_ALL, "Russian");
 	 char Info;
 	int a, c;
@@ -21,7 +20,7 @@ int main()
 	cout << "Введите время работы кластера (кол-во тактов): ";
 	cin >> c;
 	cout << endl;
-	Cluster Test(a,c,b);
+	Cluster Test(a,c,b,1);
 	cout << "Выводить полную информацию на каждом такте? Y or N?" << endl;
 	cin >> Info;
 	if (Info == 'y' || Info == 'Y')

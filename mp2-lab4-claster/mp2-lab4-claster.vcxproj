@@ -153,7 +153,6 @@
   <ItemGroup>
     <ClInclude Include="Cluster.h" />
     <ClInclude Include="Header.h" />
-    <ClInclude Include="TList.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="queue.h" />
     <ClInclude Include="resource.h" />
