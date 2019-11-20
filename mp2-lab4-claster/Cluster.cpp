@@ -138,7 +138,7 @@ void Cluster::Start()
 			}
 			cout << "==============================================================================" << endl;
 		}                                     
-		Sleep(1);
+		Sleep(1000);
 	}
 	MiddleLoad = MiddleLoad / (SummCores * WorkTime);
 	cout << "—редн€€ загрузка кластера:" << MiddleLoad * 100 << " %";
