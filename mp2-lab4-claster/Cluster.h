@@ -45,12 +45,11 @@ class Cluster
 	bool InfoF; // Флаг на вывод полной информации 
 	int WorkTime; // Время работы
 	double ChanceOfNew; // Порог появления новой задачи
+	bool ChanceToInsertTask();
 public:
 	void SetInfoMode(bool info); 
 	Cluster(int NumProc=0, int WorkTime=0, double Chance=0,bool Info=false);
 	void Start();
-	bool ChanceToInsertTask();
-     Cluster();
 	~Cluster();
 };
 

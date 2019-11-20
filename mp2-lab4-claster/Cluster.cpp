@@ -173,12 +173,6 @@ bool Cluster::ChanceToInsertTask()
 	return false;
 }
 
-Cluster::Cluster()
-{
-	 WorkTime=0;
-	 ChanceOfNew=0;
-}
-
 
 Cluster::~Cluster()
 {
