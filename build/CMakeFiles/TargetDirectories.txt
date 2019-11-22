@@ -1,0 +1,5 @@
+C:/Users/Daunil/source/repos/mp2-lab4-claster/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/Daunil/source/repos/mp2-lab4-claster/build/CMakeFiles/ZERO_CHECK.dir
+C:/Users/Daunil/source/repos/mp2-lab4-claster/build/mp2-lab4-claster/CMakeFiles/mp2-lab4-claster.dir
+C:/Users/Daunil/source/repos/mp2-lab4-claster/build/ClasterTest/CMakeFiles/ClasterTest.dir
+C:/Users/Daunil/source/repos/mp2-lab4-claster/build/gtest/CMakeFiles/gtest.dir

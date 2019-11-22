@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Daunil\source\repos\mp2-lab4-claster\build\CMakeFiles\9aa96ae736e3d295348815003eea187a\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{11E91C38-5E2C-308D-9824-F3A57DDE4AB0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\Daunil\source\repos\mp2-lab4-claster\mp2-lab4-claster\Cluster.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Daunil\source\repos\mp2-lab4-claster\mp2-lab4-claster\main_sample.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Daunil\source\repos\mp2-lab4-claster\mp2-lab4-claster\pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\Daunil\source\repos\mp2-lab4-claster\mp2-lab4-claster\Cluster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Daunil\source\repos\mp2-lab4-claster\mp2-lab4-claster\Header.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Daunil\source\repos\mp2-lab4-claster\mp2-lab4-claster\pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Daunil\source\repos\mp2-lab4-claster\mp2-lab4-claster\queue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Daunil\source\repos\mp2-lab4-claster\mp2-lab4-claster\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Daunil\source\repos\mp2-lab4-claster\mp2-lab4-claster\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{A77C1A4A-3A6F-3A49-9B8F-DD8C099B309F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{82866B10-88F7-3518-9A71-247C4382C4EA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
