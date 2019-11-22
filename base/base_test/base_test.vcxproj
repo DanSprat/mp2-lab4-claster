@@ -11,8 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Test_Claster.cpp" />
     <ClCompile Include="test_main.cpp" />
-    <ClCompile Include="Test_Sample.cpp" />
+    <ClCompile Include="Test_queue.cpp" />
+    <ClCompile Include="Test_TPQueue.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F266A6B4-CBC2-41C0-9F55-056959ABA352}</ProjectGuid>

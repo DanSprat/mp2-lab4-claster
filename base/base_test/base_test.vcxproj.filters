@@ -14,10 +14,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Test_Sample.cpp">
+    <ClCompile Include="test_main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="test_main.cpp">
+    <ClCompile Include="Test_queue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Test_TPQueue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Test_Claster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

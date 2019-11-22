@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{6D24D53A-DD55-49C0-B5AE-ECBEB4A939C4}</ProjectGuid>
+    <ProjectGuid>{7EBE8C23-FDE3-4229-8A71-90759B180369}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>base</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
@@ -151,10 +151,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Cluster.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="queue.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="base.cpp" />
+    <ClCompile Include="Cluster.cpp" />
+    <ClCompile Include="main_sample.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
