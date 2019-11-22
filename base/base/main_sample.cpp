@@ -1,12 +1,34 @@
 ﻿// mp2-lab4-claster.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
 //
-
 #include "pch.h"
-#include <iostream>
-
+#include "Cluster.h"
+#include "queue.h"
+using namespace std;
 int main()
 {
-    std::cout << "Hello World!\n"; 
+	ofstream fout("text.txt", ios_base::app);
+	setlocale(LC_ALL, "Russian");
+	 char Info;
+	int a, c;
+	double b;
+	cout << "Введите количество процессоров: ";
+	cin >> a;
+	cout << endl;
+	cout << "Введите порог появления для новой задачи (от 0 до 1): ";
+	cin >> b;
+	cout << endl;
+	cout << "Введите время работы кластера (кол-во тактов): ";
+	cin >> c;
+	cout << endl;
+	Cluster Test(a,c,b,1);
+	cout << "Выводить полную информацию на каждом такте? Y or N?" << endl;
+	cin >> Info;
+	if (Info == 'y' || Info == 'Y')
+		Test.SetInfoMode(1);
+	else 
+		Test.SetInfoMode(0);
+	Test.Start();
+
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
